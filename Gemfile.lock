@@ -10,10 +10,14 @@ GEM
     json (2.6.3)
     language_server-protocol (3.17.0.3)
     minitest (5.20.0)
+    minitest-power_assert (0.3.1)
+      minitest
+      power_assert (>= 1.1)
     parallel (1.23.0)
     parser (3.2.2.4)
       ast (~> 2.4.1)
       racc
+    power_assert (2.0.3)
     racc (1.7.3)
     rainbow (3.1.1)
     rake (13.1.0)
@@ -41,6 +45,7 @@ PLATFORMS
 DEPENDENCIES
   hexlet_code!
   minitest (~> 5.0)
+  minitest-power_assert
   rake (~> 13.0)
   rubocop (~> 1.21)
 
