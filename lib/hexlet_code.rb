@@ -5,4 +5,12 @@ require_relative "hexlet_code/version"
 module HexletCode
   class Error < StandardError; end
   autoload(:Tag, File.expand_path("./lib/tag.rb"))
+
+  class << self
+    def form_for(user, options = {})
+      p user
+      action = options.fetch(:url, "#")
+      "<form action=\"#{action}\" method=\"post\"></form>"
+    end
+  end
 end
