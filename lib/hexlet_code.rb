@@ -21,11 +21,11 @@ module HexletCode
 
       tag_name = get_tag_name(options)
       tag_options = get_tag_options(attr, options)
+      @rez += Tag.build("label", for: attr.to_s) { attr.to_s.capitalize }
       case tag_name
       when "textarea"
         @rez += Tag.build(tag_name, tag_options) { @object.public_send(attr) }
       when "input"
-        @rez += Tag.build("label", for: attr.to_s) { attr.to_s.capitalize }
         @rez += Tag.build(tag_name, tag_options)
       end
     end
@@ -80,8 +80,9 @@ module HexletCode
 
   def self.form_for(user, options = {})
     action = options.fetch(:url, "#")
+    method = options.fetch(:method, "post")
     form = FormBuilder.new(user)
     yield form
-    "<form action=\"#{action}\" method=\"post\">#{form.rez}</form>"
+    "<form action=\"#{action}\" method=\"#{method}\">#{form.rez}</form>"
   end
 end
