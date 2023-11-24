@@ -17,17 +17,28 @@ module HexletCode
     end
 
     def input(attr, options = {})
-      raise NoMethodError, "undefined method #{attr} for #{@object}" unless @object.public_send(attr)
+      raise NoMethodError, "undefined method #{attr} for #{@object}" unless @object.respond_to?(attr)
 
       tag_name = get_tag_name(options)
       tag_options = get_tag_options(attr, options)
-      @rez += Tag.build(tag_name, tag_options) { @object.public_send(attr) } if tag_name == "textarea"
-      @rez += Tag.build(tag_name, tag_options) if tag_name != "textarea"
+      case tag_name
+      when "textarea"
+        @rez += Tag.build(tag_name, tag_options) { @object.public_send(attr) }
+      when "input"
+        @rez += Tag.build("label", for: attr.to_s) { attr.to_s.capitalize }
+        @rez += Tag.build(tag_name, tag_options)
+      end
+    end
+
+    def submit(button_text = "Save")
+      tag_name = get_tag_name
+      tag_options = get_submit_options(button_text)
+      @rez += Tag.build(tag_name, tag_options)
     end
 
     private
 
-    def get_tag_name(options)
+    def get_tag_name(options = {})
       tag_name = :input
       if options[:as]
         tag_name = options[:as] == :text ? :textarea : options[:as]
@@ -51,11 +62,19 @@ module HexletCode
 
     def input_options(attr, options)
       type = options[:type] ||= "text"
-      { type: type, value: @object.public_send(attr) }.merge(options)
+      value = @object.public_send(attr) || ""
+      { type: type, value: value }.merge(options)
     end
 
     def default_options(attr, options)
       { name: attr.to_s }.merge(options)
+    end
+
+    def get_submit_options(btn_text)
+      {
+        type: "submit",
+        value: btn_text
+      }
     end
   end
 
