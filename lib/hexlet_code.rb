@@ -81,8 +81,10 @@ module HexletCode
   def self.form_for(user, options = {})
     action = options.fetch(:url, "#")
     method = options.fetch(:method, "post")
+    form_tags = options.reject { |key, _| ![:url, :method].include?(key) }
+    attributes = form_tags.map { |key, value| " #{key}=\"#{value}\""}.join
     form = FormBuilder.new(user)
     yield form
-    "<form action=\"#{action}\" method=\"#{method}\">#{form.rez}</form>"
+    "<form action=\"#{action}\" method=\"#{method}\"#{attributes}>#{form.rez}</form>"
   end
 end
