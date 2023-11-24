@@ -51,13 +51,13 @@ module HexletCode
       options = textarea_options(options) if tag_name == 'textarea'
       options = input_options(attr, options) if tag_name == 'input'
       options = default_options(attr, options)
-      options.reject { |key, _| key == :as }
+      options.except(:as)
     end
 
     def textarea_options(options)
-      cols = options[:cols] ||= '20'
-      rows = options[:rows] ||= '40'
-      { cols: cols, rows: rows }.merge(options)
+      cols_ta = options[:cols] ||= '20'
+      rows_ta = options[:rows] ||= '40'
+      { cols: cols_ta, rows: rows_ta }.merge(options)
     end
 
     def input_options(attr, options)
