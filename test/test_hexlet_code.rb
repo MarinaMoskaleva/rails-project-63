@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../test_helper'
+require_relative './test_helper'
 
 class TestHexletCode < TestCase
   User = Struct.new(:name, :job, keyword_init: true)
