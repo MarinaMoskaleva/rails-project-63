@@ -1,34 +1,29 @@
 # frozen_string_literal: true
 
 module HexletCode
-  # The FormBuilder class facilitates the step-by-step construction of an HTML form
-  # based on provided data objects, automatically generating HTML code for input fields and text areas.
+  # The FormBuilder class prepares an array for rendering form
   class FormBuilder
     attr_accessor :result
 
     def initialize(object)
       @object = object
-      @result = ''
+      @result = { tags: [] }
     end
 
     def input(object_attr, options = {})
       raise NoMethodError, "undefined method #{object_attr} for #{@object}" unless @object.respond_to?(object_attr)
 
-      tag_name = get_tag_name(options)
-      tag_options = get_tag_options(object_attr, options)
-      @result += Tag.build('label', for: object_attr.to_s) { object_attr.to_s.capitalize }
-      case tag_name
-      when 'textarea'
-        @result += Tag.build(tag_name, tag_options) { @object.public_send(object_attr) }
-      when 'input'
-        @result += Tag.build(tag_name, tag_options)
-      end
+      @result[:tags].push(get_label_tag(object_attr.to_s))
+      object_tag = {
+        tag_name: get_tag_name(options),
+        tag_options: get_tag_options(object_attr, options)
+      }
+      object_tag[:tag_block] = @object.public_send(object_attr) if get_tag_name(options) == 'textarea'
+      @result[:tags].push(object_tag)
     end
 
     def submit(button_text = 'Save')
-      tag_name = get_tag_name
-      tag_options = get_submit_options(button_text)
-      @result += Tag.build(tag_name, tag_options)
+      @result[:tags].push({ tag_name: get_tag_name, tag_options: get_submit_options(button_text) })
     end
 
     private
@@ -69,6 +64,14 @@ module HexletCode
       {
         type: 'submit',
         value: btn_text
+      }
+    end
+
+    def get_label_tag(value)
+      {
+        tag_name: 'label',
+        tag_options: { for: value },
+        tag_block: value.capitalize
       }
     end
   end
