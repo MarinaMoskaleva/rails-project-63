@@ -7,8 +7,9 @@ module HexletCode
     def self.build(tag_name, options = {})
       attributes = options.map { |key, value| " #{key}=\"#{value}\"" }.join
       result = "<#{tag_name}#{attributes}>"
-      result += yield + "</#{tag_name}>" unless SELF_CLOSING_TAGS.include? tag_name
-      result
+      return result if SELF_CLOSING_TAGS.include? tag_name
+
+      result + yield + "</#{tag_name}>"
     end
   end
 end
