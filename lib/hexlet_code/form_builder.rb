@@ -5,6 +5,7 @@ module HexletCode
   autoload(:LabelTag, File.join(__dir__, 'label_tag.rb'))
   autoload(:InputTag, File.join(__dir__, 'input_tag.rb'))
   autoload(:TextareaTag, File.join(__dir__, 'textarea_tag.rb'))
+  autoload(:FormTag, File.join(__dir__, 'form_tag.rb'))
   # The FormBuilder class renders a form based on the provided array.
   class FormBuilder
     def render(form)
@@ -12,7 +13,7 @@ module HexletCode
       input_fields = get_input_fields(form[:tags_input])
       submit_field = get_submit_field(form[:tag_submit])
       form_fields = input_fields + submit_field
-      Tag.build(form_tag[:tag_name], form_tag[:tag_options]) { form_fields }
+      FormTag.build(form_tag[:tag_options], form_fields)
     end
 
     private
