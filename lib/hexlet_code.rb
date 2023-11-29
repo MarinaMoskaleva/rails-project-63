@@ -10,7 +10,6 @@ module HexletCode
   def self.form_for(object, options = {})
     form = Form.new(object, options)
     yield form
-    form_builder = FormBuilder.new
-    form_builder.render(form.form)
+    FormBuilder.render(form.form)
   end
 end

@@ -28,7 +28,7 @@ class TestHexletCode < TestCase
     actual_data = HexletCode.form_for @user do |f|
       f.input :name
       f.input :job
-      f.submit 'Wow'
+      f.submit 'Wow', class: 'btn_submit'
     end
     assert { expected_data == actual_data }
   end

@@ -8,7 +8,7 @@ module HexletCode
     def self.build(options)
       input_type = options[:type] ||= 'text'
       input_value = options[:value] || ''
-      input_options = options.except(:value).merge({ type: input_type, value: input_value })
+      input_options = options.merge({ type: input_type, value: input_value })
       Tag.build('input', input_options)
     end
   end
