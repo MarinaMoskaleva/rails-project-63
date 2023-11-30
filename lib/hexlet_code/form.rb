@@ -36,7 +36,7 @@ module HexletCode
     private
 
     def get_tag_options(object_attr, options)
-      tag_value = @object.public_send(object_attr) || ''
+      tag_value = options[:value] || @object.public_send(object_attr) || ''
       options = { name: object_attr.to_s }.merge(options)
       options = options.merge({ value: tag_value })
       options.except(:as)
